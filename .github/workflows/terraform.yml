@@ -1,12 +1,15 @@
 name: Terraform Pipeline
 
-env:
-  TF_VAR_aws_cred: "-var=\"aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}\" -var=\"aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}\""
+env: &aws_cred
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 on:
   pull_request:
     branches:
+      - develop
       - main
+      
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -18,15 +21,19 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.4
-
-      - name: Check Terraform Version
+      
+      - name: Confirma instalação do Terraform
         run: terraform version
 
-      - name: Terraform Init
+      - name: Inicializar backend do Terraform
         run: terraform init
       
       - name: Terraform Plan
-        run: terraform plan ${{ env.TF_VAR_aws_cred }}
+        run: terraform plan
+        env:
+          <<: *aws_cred
       
       - name: Terraform Apply
-        run: terraform apply -auto-approve ${{ env.TF_VAR_aws_cred }}
+        run: terraform apply -auto-approve
+        env:
+          <<: *aws_cred
