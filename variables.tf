@@ -1,9 +1,11 @@
-variable "aws_access_key" {
+variable "aws_region" {
   description = "AWS Access Key"
-  type        = string
+  default = "us-east-1"
+  type = string
 }
 
-variable "aws_secret_key" {
-  description = "AWS Secret Key"
-  type        = string
+variable "tfstate_bucket_name" {
+  description = "Bucket para armazenar tfstate"
+  default = "postech-iac-state"
+  type = string
 }

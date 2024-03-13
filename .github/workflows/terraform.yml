@@ -1,9 +1,5 @@
 name: Terraform Pipeline
 
-env: &aws_cred
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 on:
   pull_request:
     branches:
@@ -22,18 +18,26 @@ jobs:
         with:
           terraform_version: 1.7.4
       
-      - name: Confirma instalação do Terraform
-        run: terraform version
+      - name: Provisionar bucket S3
+        run: terraform init && terraform apply -auto-approve -target=aws_s3_bucket.terraform_state_bucket
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Inicializar backend do Terraform
         run: terraform init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
       - name: Terraform Plan
         run: terraform plan
         env:
-          <<: *aws_cred
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
-          <<: *aws_cred
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
