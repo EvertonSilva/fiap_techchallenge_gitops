@@ -5,7 +5,7 @@ on:
     branches:
       - develop
       - main
-      
+
 jobs:
   setup_terraform:
     runs-on: ubuntu-latest
