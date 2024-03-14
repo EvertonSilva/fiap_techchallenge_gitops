@@ -7,8 +7,9 @@ on:
       - main
       
 jobs:
-  terraform:
+  setup_terraform:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,12 +19,19 @@ jobs:
         with:
           terraform_version: 1.7.4
       
-      - name: Provisionar bucket S3
+      - name: Bucket S3 para armazenar tfstate
         run: terraform init && terraform apply -auto-approve -target=aws_s3_bucket.terraform_state_bucket
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+      
+      - name: Delay para provisionamento do bucket
+        run: sleep 30s
+  
+  apply_changes:
+    runs-on: ubuntu-latest
+    needs: setup_terraform
+    steps:
       - name: Inicializar backend do Terraform
         run: terraform init
         env:
