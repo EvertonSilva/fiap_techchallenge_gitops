@@ -17,9 +17,6 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.4
-      
-      - name: Confirma instalação do Terraform
-        run: terraform version
 
       - name: Inicializar backend do Terraform
         run: terraform init
