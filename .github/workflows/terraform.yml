@@ -18,11 +18,11 @@ jobs:
         with:
           terraform_version: 1.7.4
       
-      - name: Confirma instalação do Terraform
-        run: terraform version
-
-      - name: Inicializar backend do Terraform
+      - name: Inicializar Terraform
         run: terraform init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
       - name: Terraform Plan
         run: terraform plan
