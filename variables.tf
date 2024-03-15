@@ -1,1 +1,2 @@
+# Arquivo de variáveis
 
