@@ -81,7 +81,7 @@ resource "aws_eks_cluster" "postech_fiap_eks" {
 }
 
 output "cluster_security_group_id" {
-  value = aws_eks_cluster.postech_fiap_eks.vpc_config[0].security_group_ids[0]
+  value = element(aws_eks_cluster.postech_fiap_eks.vpc_config[0].security_group_ids, 0)
 }
 
 output "postech_fiap_vpc" {
