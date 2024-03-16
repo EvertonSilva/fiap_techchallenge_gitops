@@ -1,12 +1,14 @@
 
 resource "aws_iam_role" "cluster_role" {
     name = "postech-fiap-eks-role"
-    assume_role_policy = jsondecode({
+    assume_role_policy = jsonencode({
         "Version": "2012-10-17",
-        "Satatement": [
+        "Statement": [
             {
                 "Effect": "Allow",
-                "Principal": "eks.amazonaws.com",
+                "Principal": {
+                    "Service": "eks.amazonaws.com"
+                },
                 "Action": "sts:AssumeRole"
             }
         ]
