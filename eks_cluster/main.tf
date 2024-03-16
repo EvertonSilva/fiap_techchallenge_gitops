@@ -1,4 +1,18 @@
 
+resource "aws_iam_role" "cluster_role" {
+    name = "postech-fiap-eks-role"
+    assume_role_policy = jsondecode({
+        "Version": "2012-10-17",
+        "Satatement": [
+            {
+                "Effect": "Allow",
+                "Principal": "eks.amazonaws.com",
+                "Action": "sts:AssumeRole"
+            }
+        ]
+    })
+}
+
 resource "aws_eks_cluster" "postech_fiap_eks" {
     name     = "postech-fiap-eks"
     role_arn = aws_iam_role.cluster_role.arn
@@ -14,7 +28,7 @@ resource "aws_eks_cluster" "postech_fiap_eks" {
 
     tags = {
         Ambiente = "Production"
-        Projeto     = "PosTechFiap"
+        Projeto  = "PosTechFiap"
     }
 }
 
