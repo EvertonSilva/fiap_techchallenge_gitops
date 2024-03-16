@@ -1,4 +1,13 @@
 
+resource "aws_vpc" "postech_fiap_vpc" {
+    cidr_block = "10.0.0.0/16"
+    
+    tags = {
+        Ambiente = "Production"
+        Projeto  = "PosTechFiap"
+    }
+}
+
 resource "aws_iam_role" "cluster_role" {
     name = "postech-fiap-eks-role"
     assume_role_policy = jsonencode({
@@ -13,6 +22,17 @@ resource "aws_iam_role" "cluster_role" {
             }
         ]
     })
+}
+
+resource "aws_subnet" "private" {
+    vpc_id            = aws_vpc.postech_fiap_vpc.id
+    cidr_block        = "10.0.1.0/24"
+    availability_zone = "us-east-1a"
+
+    tags = {
+        Ambiente = "Production"
+        Projeto  = "PosTechFiap"
+    }
 }
 
 resource "aws_eks_cluster" "postech_fiap_eks" {
