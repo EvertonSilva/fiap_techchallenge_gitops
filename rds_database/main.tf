@@ -1,7 +1,7 @@
 
 variable "eks_cluster_security_group_id" {}
+variable "postech_fiap_vpc_id" {}
 
-# Recurso para criar o banco de dados RDS PostgreSQL
 resource "aws_db_instance" "postech_fiap_db" {
   engine               = "postgres"
   instance_class       = "db.t3.micro"
@@ -12,9 +12,7 @@ resource "aws_db_instance" "postech_fiap_db" {
   parameter_group_name = "default.postgres11"
   publicly_accessible  = false
   
-  vpc_security_group_ids = [
-    aws_security_group.eks_cluster_sg.id
-  ]
+  vpc_security_group_ids = [var.eks_cluster_security_group_id]
 
   tags = {
     Ambiente = "Production"
@@ -22,15 +20,10 @@ resource "aws_db_instance" "postech_fiap_db" {
   }
 }
 
-resource "aws_db_subnet_group_association" "rds_subnet_association" {
-  subnet_group_name = aws_db_subnet_group.private.name
-  db_subnet_group_name = aws_db_instance.postech_fiap_db.subnet_group_name
-}
-
 resource "aws_security_group" "rds_sg" {
   name        = "rds-sg"
-  description = "Security group"
-  vpc_id      = aws_vpc.main.id
+  description = "Regras de acesso para o banco de dados"
+  vpc_id      = var.postech_fiap_vpc_id
 
   ingress {
     from_port   = 5432  # Porta padrão do PostgreSQL
@@ -38,6 +31,12 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "tcp"
     cidr_blocks = ["${var.eks_cluster_security_group_id}/32"]
   }
+}
+
+resource "aws_subnet" "private" {
+  vpc_id = var.postech_fiap_vpc_id
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "us-east-1a"
 }
 
 resource "aws_db_subnet_group" "private" {
