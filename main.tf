@@ -26,3 +26,7 @@ module "rds_database" {
   postech_fiap_vpc_id = module.eks_cluster.postech_fiap_vpc_id
   rds_master_passwd = var.RDS_PASSWD
 }
+
+module "ecr_repository" {
+  source = "./ecr"
+}
