@@ -3,8 +3,8 @@ resource "aws_vpc" "postech_fiap_vpc" {
     cidr_block = "10.0.0.0/16"
 
     tags = {
-        Ambiente = "Production"
-        Projeto  = "PosTechFiap"
+        Environment = "Production"
+        Project     = "PosTechFiap"
     }
 }
 
@@ -30,8 +30,8 @@ resource "aws_subnet" "private" {
     availability_zone = "us-east-1a"
 
     tags = {
-        Ambiente = "Production"
-        Projeto  = "PosTechFiap"
+        Environment = "Production"
+        Project     = "PosTechFiap"
     }
 }
 
@@ -62,7 +62,7 @@ resource "aws_security_group" "cluster_sg" {
 }
 
 resource "aws_eks_cluster" "postech_fiap_eks" {
-    name     = "postech-fiap-eks"
+    name     = "posTechFiapEKS"
     role_arn = aws_iam_role.cluster_role.arn
     version  = "1.27"
 
@@ -75,8 +75,8 @@ resource "aws_eks_cluster" "postech_fiap_eks" {
     enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
     tags = {
-        Ambiente = "Production"
-        Projeto  = "PosTechFiap"
+        Environment = "Production"
+        Project     = "PosTechFiap"
     }
 }
 

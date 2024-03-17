@@ -37,13 +37,27 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-resource "aws_subnet" "private" {
+resource "aws_subnet" "rds_subnet_a" {
   vpc_id = var.postech_fiap_vpc_id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1a"
 }
 
+resource "aws_subnet" "rds_subnet_b" {
+  vpc_id = var.postech_fiap_vpc_id
+  cidr_block = "10.0.3.0/24"
+  availability_zone = "us-east-1b"
+}
+
 resource "aws_db_subnet_group" "private" {
-  name       = "postech-fiap-rds-sg"
-  subnet_ids = aws_subnet.private[*].id
+  name       = "posTechFiapSubnetGroupRDS"
+  subnet_ids = [
+    aws_subnet.rds_subnet_a[*].id,
+    aws_subnet.rds_subnet_b[*].id
+  ]
+
+  tags = {
+    Name = "RDS Subnet Group"
+    Projeto  = "PosTechFiap"
+  }
 }
