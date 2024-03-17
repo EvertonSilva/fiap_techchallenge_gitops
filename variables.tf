@@ -1,9 +1,6 @@
-variable "aws_access_key" {
-  description = "AWS Access Key"
-  type        = string
-}
+# Arquivo de variáveis
 
-variable "aws_secret_key" {
-  description = "AWS Secret Key"
-  type        = string
+variable "RDS_PASSWD" {
+  type = string
+  description = "Senha RDS Master, deve ser definida via variável de ambiente TF_VAR_RDS_PASSWD"
 }
