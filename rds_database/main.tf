@@ -8,7 +8,7 @@ resource "aws_db_instance" "postech_fiap_db" {
   engine_version       = "16.2" 
   instance_class       = "db.t3.micro"
   allocated_storage    = 40 
-  identifier           = "postech_fiap_db"
+  identifier           = "postechfiapdb"
   db_name              = "postgres" 
   username             = "postgres"
   password             = var.rds_master_passwd
