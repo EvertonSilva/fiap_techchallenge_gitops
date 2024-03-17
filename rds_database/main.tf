@@ -12,7 +12,6 @@ resource "aws_db_instance" "postech_fiap_db" {
   db_name              = "postgres" 
   username             = "postgres"
   password             = var.rds_master_passwd
-  parameter_group_name = "default.postgres16.2"
   db_subnet_group_name = aws_db_subnet_group.private.name
   publicly_accessible  = false
   
