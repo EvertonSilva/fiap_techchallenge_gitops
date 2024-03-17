@@ -39,6 +39,17 @@ resource "aws_subnet" "private" {
     }
 }
 
+resource "aws_subnet" "private_b" {
+    vpc_id            = aws_vpc.postech_fiap_vpc.id
+    cidr_block        = "10.0.4.0/24"
+    availability_zone = "us-east-1b"
+
+    tags = {
+        Environment = "Production"
+        Project     = "PosTechFiap"
+    }
+}
+
 resource "aws_security_group" "cluster_sg" {
   description = "Permite acesso entre EKS e RDS"
   vpc_id      = aws_vpc.postech_fiap_vpc.id
@@ -75,7 +86,10 @@ resource "aws_eks_cluster" "postech_fiap_eks" {
     version  = "1.27"
 
     vpc_config {
-        subnet_ids         = aws_subnet.private[*].id
+        subnet_ids         = [
+          aws_subnet.private.id,
+          aws_subnet.private_b.id,
+        ]
         security_group_ids = [aws_security_group.cluster_sg.id]
         endpoint_private_access = true
         endpoint_public_access  = false
