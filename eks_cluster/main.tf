@@ -36,9 +36,9 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_security_group" "cluster_sg" {
-  name        = "postech_fiap_eks_sg"
+  name        = "posTechFiapSecGroupEKS"  
   description = "Regras de acesso para permitir tráfego entre o cluster EKS e o banco de RDS"
-  vpc_id = aws_vpc.postech_fiap_vpc.id
+  vpc_id      = aws_vpc.postech_fiap_vpc.id
 
   ingress {
     from_port   = 80
