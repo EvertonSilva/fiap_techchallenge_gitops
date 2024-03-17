@@ -51,8 +51,8 @@ resource "aws_subnet" "rds_subnet_b" {
 
 resource "aws_db_subnet_group" "private" {
   subnet_ids = [
-    aws_subnet.rds_subnet_a[*].id,
-    aws_subnet.rds_subnet_b[*].id
+    aws_subnet.rds_subnet_a.id,
+    aws_subnet.rds_subnet_b.id
   ]
 
   tags = {
