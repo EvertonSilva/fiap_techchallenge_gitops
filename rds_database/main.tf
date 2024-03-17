@@ -1,15 +1,19 @@
 
 variable "eks_cluster_security_group_id" {}
 variable "postech_fiap_vpc_id" {}
+variable "rds_master_passwd" {}
 
 resource "aws_db_instance" "postech_fiap_db" {
   engine               = "postgres"
+  engine_version       = "16.2" 
   instance_class       = "db.t3.micro"
   allocated_storage    = 40 
   identifier           = "postech_fiap_db"
-  username             = "db_user"
-  password             = "db_password"
-  parameter_group_name = "default.postgres11"
+  db_name              = "postgres" 
+  username             = "postgres"
+  password             = var.rds_master_passwd
+  parameter_group_name = "default.postgres16.2"
+  db_subnet_group_name = aws_db_subnet_group.private.name
   publicly_accessible  = false
   
   vpc_security_group_ids = [var.eks_cluster_security_group_id]
@@ -40,6 +44,6 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_db_subnet_group" "private" {
-  name       = "rds-private-subnet-group"
+  name       = "postech-fiap-rds-sg"
   subnet_ids = [aws_subnet.private.*.id]
 }
