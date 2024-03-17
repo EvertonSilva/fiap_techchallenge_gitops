@@ -9,6 +9,7 @@ on:
 
 jobs:
   terraform_apply:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -34,7 +35,6 @@ jobs:
           TF_VAR_RDS_PASSWD: ${{ secrets.RDS_PASSWD }}
       
       - name: Terraform Apply
-        if: github.event.pull_request.merged == true
         run: terraform apply -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
