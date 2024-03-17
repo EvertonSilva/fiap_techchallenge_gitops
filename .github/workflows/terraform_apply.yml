@@ -3,11 +3,12 @@ name: Terraform Pipeline
 on:
   pull_request:
     branches:
-      - develop
       - main
+    types:
+        - closed
 
 jobs:
-  terraform:
+  terraform_apply:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,7 +34,7 @@ jobs:
           TF_VAR_RDS_PASSWD: ${{ secrets.RDS_PASSWD }}
       
       - name: Terraform Apply
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event.pull_request.merged == true
         run: terraform apply -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
