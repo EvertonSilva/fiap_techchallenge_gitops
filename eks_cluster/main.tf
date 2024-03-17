@@ -9,7 +9,6 @@ resource "aws_vpc" "postech_fiap_vpc" {
 }
 
 resource "aws_iam_role" "cluster_role" {
-    name = "postech-fiap-eks-role"
     assume_role_policy = jsonencode({
         "Version": "2012-10-17",
         "Statement": [
@@ -22,6 +21,11 @@ resource "aws_iam_role" "cluster_role" {
             }
         ]
     })
+
+    tags = {
+      Environment = "Production"
+      Project     = "PosTechFiap"
+    }
 }
 
 resource "aws_subnet" "private" {
@@ -36,7 +40,6 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_security_group" "cluster_sg" {
-  name        = "posTechFiapSecGroupEKS"  
   description = "Regras de acesso para permitir tráfego entre o cluster EKS e o banco de RDS"
   vpc_id      = aws_vpc.postech_fiap_vpc.id
 
@@ -58,6 +61,11 @@ resource "aws_security_group" "cluster_sg" {
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
+  }
+
+  tags = {
+    Environment = "Production"
+    Project     = "PosTechFiap"
   }
 }
 
