@@ -45,5 +45,5 @@ resource "aws_subnet" "private" {
 
 resource "aws_db_subnet_group" "private" {
   name       = "postech-fiap-rds-sg"
-  subnet_ids = [aws_subnet.private[*].id]
+  subnet_ids = aws_subnet.private[*].id
 }
