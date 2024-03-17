@@ -83,7 +83,7 @@ resource "aws_security_group" "cluster_sg" {
 resource "aws_eks_cluster" "postech_fiap_eks" {
     name     = "posTechFiapEKS"
     role_arn = aws_iam_role.cluster_role.arn
-    version  = "1.27"
+    version  = "1.29"
 
     vpc_config {
         subnet_ids         = [
