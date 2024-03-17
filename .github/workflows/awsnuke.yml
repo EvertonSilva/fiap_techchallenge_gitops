@@ -1,0 +1,26 @@
+name: Remove recursos na AWS
+
+on: workflow_dispatch
+
+jobs:
+    awsnuke:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3 
+              with:
+                terraform_version: 1.7.4
+            
+            - name: Inicializar Terraform
+              run: terraform init
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                TF_VAR_RDS_PASSWD: ${{ secrets.RDS_PASSWD }}
+            
+            - name: Deletar infra na AWS
+              run: terraform destroy
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                TF_VAR_RDS_PASSWD: ${{ secrets.RDS_PASSWD }}
