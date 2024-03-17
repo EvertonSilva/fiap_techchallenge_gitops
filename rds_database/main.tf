@@ -30,10 +30,9 @@ resource "aws_security_group" "rds_sg" {
   vpc_id      = var.postech_fiap_vpc_id
 
   ingress {
-    from_port   = 5432  # Porta padrão do PostgreSQL
+    from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["${var.eks_cluster_security_group_id}/32"]
   }
 }
 
