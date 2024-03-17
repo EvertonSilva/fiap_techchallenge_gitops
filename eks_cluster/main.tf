@@ -40,7 +40,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_security_group" "cluster_sg" {
-  description = "Regras de acesso para permitir tráfego entre o cluster EKS e o banco de RDS"
+  description = "Permite acesso entre EKS e RDS"
   vpc_id      = aws_vpc.postech_fiap_vpc.id
 
   ingress {
