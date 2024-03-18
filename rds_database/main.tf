@@ -14,6 +14,8 @@ resource "aws_db_instance" "postech_fiap_db" {
   password             = var.rds_master_passwd
   db_subnet_group_name = aws_db_subnet_group.private.name
   publicly_accessible  = false
+  skip_final_snapshot  = false
+  final_snapshot_identifier = "postechfiap-rds-snapshot"
   
   vpc_security_group_ids = [var.eks_cluster_security_group_id]
 

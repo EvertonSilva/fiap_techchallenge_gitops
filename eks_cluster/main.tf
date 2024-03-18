@@ -51,7 +51,6 @@ resource "aws_subnet" "private_b" {
 }
 
 resource "aws_security_group" "cluster_sg" {
-  name = "postech-eks-sg"
   description = "Permite acesso entre EKS e RDS"
   vpc_id      = aws_vpc.postech_fiap_vpc.id
 
