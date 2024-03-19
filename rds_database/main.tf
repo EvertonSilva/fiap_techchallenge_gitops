@@ -2,6 +2,7 @@
 variable "eks_cluster_security_group_id" {}
 variable "postech_fiap_vpc_id" {}
 variable "rds_master_passwd" {}
+variable "common_tags" {}
 
 resource "aws_db_instance" "postech_fiap_db" {
   engine               = "postgres"
@@ -17,10 +18,14 @@ resource "aws_db_instance" "postech_fiap_db" {
   
   vpc_security_group_ids = [var.eks_cluster_security_group_id]
 
-  tags = {
-    Ambiente = "Production"
-    Projeto  = "PosTechFiap"
+  lifecycle {
+    ignore_changes = [ skip_final_snapshot ]
   }
+
+  tags = merge(
+    var.common_tags,
+    { Name = "postech-fiap-postgres" }
+  )
 }
 
 resource "aws_security_group" "rds_sg" {
@@ -32,19 +37,35 @@ resource "aws_security_group" "rds_sg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = merge(
+    var.common_tags,
+    { Name = "postech-fiap-rds-secgr" }
+  )
 }
 
 resource "aws_subnet" "rds_subnet_a" {
   vpc_id = var.postech_fiap_vpc_id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1a"
+
+  tags = merge(
+    var.common_tags,
+    { Name = "postech-fiap-rds-subnet-az-A" }
+  )
 }
 
 resource "aws_subnet" "rds_subnet_b" {
   vpc_id = var.postech_fiap_vpc_id
   cidr_block = "10.0.3.0/24"
   availability_zone = "us-east-1b"
+
+  tags = merge(
+    var.common_tags,
+    { Name = "postech-fiap-rds-subnet-az-B" }
+  )
 }
 
 resource "aws_db_subnet_group" "private" {
@@ -53,8 +74,8 @@ resource "aws_db_subnet_group" "private" {
     aws_subnet.rds_subnet_b.id
   ]
 
-  tags = {
-    Name = "RDS Subnet Group"
-    Projeto  = "PosTechFiap"
-  }
+  tags = merge(
+    var.common_tags,
+    { Name = "postech-fiap-rds-subnet-group" }
+  )
 }
