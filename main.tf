@@ -2,9 +2,9 @@
 
 provider "aws" {
     region = "us-east-1"
-    assume_role {
-      role_arn = "arn:aws:iam::637423403559:role/OrganizationAccountAccessRolePosTechDev"
-    }
+    # assume_role {
+    #   role_arn = "arn:aws:iam::637423403559:role/OrganizationAccountAccessRolePosTechDev"
+    # }
 }
 
 terraform {
@@ -18,6 +18,14 @@ terraform {
 module "eks_cluster" {
   source = "./eks_cluster"
 
+  common_tags = var.common_tags
+}
+
+module "eks_worker" {
+  source = "./eks_worker"
+
+  cluster_name = module.eks_cluster.cluster_name
+  subnets = module.eks_cluster.subnets_eks
   common_tags = var.common_tags
 }
 
