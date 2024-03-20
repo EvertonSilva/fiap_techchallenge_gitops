@@ -1,0 +1,15 @@
+regions:
+  - us-east-1
+
+account-blocklist:
+  - 
+
+accounts:
+  "637423403559":
+    filters:
+      IAMUser:
+      - "iac-user"
+      IAMUserPolicyAttachment:
+      - "iac-user -> AdministratorAccess"
+      IAMUserAccessKey:
+      - "iac-user -> AKIAZI2LFIIT4FZOGWS6"
