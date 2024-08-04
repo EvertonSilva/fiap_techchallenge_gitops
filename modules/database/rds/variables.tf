@@ -3,12 +3,8 @@ variable "vpc_id" {
   type = string
 }
 
-variable "private_subnet_id" {
-  description = "Identificador da subnet privada onde o banco será criado"
-  type = string
+variable "private_subnets" {
+  description = "Ids da subnets privadas onde o banco será criado"
+  type = list(string)
 }
 
-# variable "eks_securitygroup_id" {
-#   description = "Identificador do security group do cluster EKS"
-#   type = string
-# }

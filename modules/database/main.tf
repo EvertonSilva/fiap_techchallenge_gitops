@@ -5,5 +5,5 @@ module "network" {
 module "rds" {
     source = "./rds"
     vpc_id = module.network.vpc_id
-    private_subnet_id = module.network.private_subnet_id
+    private_subnets = module.network.private_subnets
 }
