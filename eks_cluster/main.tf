@@ -153,7 +153,6 @@ resource "aws_eks_cluster" "postech_fiap_eks" {
   )
 }
 
-
 output "cluster_name" {
   value = aws_eks_cluster.postech_fiap_eks.name
 }
